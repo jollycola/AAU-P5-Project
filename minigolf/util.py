@@ -12,4 +12,3 @@ def isMotorsAtAngle(motors, angle):
 def motorsRun(motors: [Motor], speed: int):
     for m in motors:
         m.run(speed)
-

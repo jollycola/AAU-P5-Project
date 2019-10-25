@@ -12,24 +12,17 @@ from pybricks.robotics import DriveBase
 import util
 import time
 
-# Devices
+# Setup
 swingMotor      = Motor(Port.A, Direction.COUNTERCLOCKWISE, [3, 1])
 swingMotor1     = Motor(Port.B, Direction.COUNTERCLOCKWISE, [3, 1])
 swingMotor2     = Motor(Port.C, Direction.COUNTERCLOCKWISE, [3, 1])
 directionMotor  = Motor(Port.D)
 
-button = TouchSensor(Port.S1)
+button = TouchSensor(Port.S4)
 
 swingMotors = [swingMotor, swingMotor1, swingMotor2]
+f = open("output.csv", "w")
 
-# Motor Setup
-
-swingMotor.reset_angle(0)
-swingMotor1.reset_angle(0)
-swingMotor2.reset_angle(0)
-brick.sound.beep()
-
-print("First angle %i" % swingMotor.angle())
 
 pressed = False
 
@@ -45,34 +38,49 @@ def justPressed():
     return False
 
 # Motor actions
-angle = 0
+angle = 60
+shootSpeed = 1000
 
-f = open("output.csv", "w")
 
 while True:
-    for m in swingMotors: m.track_target(angle)
-    # pyPrint(swingMotor.angle()) 
+
+    for m in swingMotors: 
+        m.run(-100)
 
     wait(1000)
-    print(angle, swingMotor.angle(), sep=",", end='\n', file=f)
-    pyPrint("Angle: %i" % angle)
-    angle -= 1
+    while not swingMotor.stalled():
+        pass
 
-    if Button.CENTER in brick.buttons():
-        Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
-        for m in swingMotors: m.run(4000)
-        break
+    brick.sound.beep()
+    for m in swingMotors:
+        m.run_angle(100, 30, Stop.HOLD, False)
 
-    if (angle == -180):
-        Thread(target=brick.sound.file, args=(SoundFile.FANFARE, 30)).start()
-        break
+    wait(1000)
+    brick.sound.beep()
 
+    for m in swingMotors: 
+        m.reset_angle(0)
+        m.stop(Stop.HOLD)
+    wait(1500)
+
+    for m in swingMotors:
+        m.run_target(30, angle, Stop.HOLD, False)
+
+    while abs(swingMotor.angle() - angle) > 1:
+        pass
+
+    for m in swingMotors: m.stop(Stop.HOLD)
+
+    brick.sound.file(SoundFile.CONFIRM)
+
+    while not button.pressed():
+        for m in swingMotors: m.track_target(angle)
+
+    for m in swingMotors: m.run(shootSpeed)
+    Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
+
+    wait(1000)
+
+pyPrint(swingMotor.angle())
 
 f.close()
-
-#brick.sound.beep(700, 200)
-wait(1000)
-for m in swingMotors: m.run_angle(200, 0, Stop.HOLD, False)
-wait(1000)
-print("Stopping, angle is: %i" % swingMotor.angle())
-brick.sound.beep(200, 100)
