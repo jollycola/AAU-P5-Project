@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "command": "py",
+    "args": [
+        "${file}",
+        "${input:pixelHeight}"
+    ],
+    "problemMatchers": [],
+    "inputs": [
+        {
+          "id": "pixelHeight",
+          "type": "promptString",
+          "description": "Pixel Height"
+          // type specific configuration attributes
+        }
+      ]
+    
+
+}
