@@ -11,6 +11,7 @@ def main():
     # Take image
     try:
         image_path = camera.takePicture("image.jpg")
+        image_path = os.path.dirname(os.path.abspath(__file__)) + "/" + image_path
     except AssertionError:
         print("Camera only works on the pi, using sample image")
         image_path = os.path.dirname(os.path.abspath(__file__)) + "\\test\\sample.jpg"
