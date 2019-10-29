@@ -1,4 +1,11 @@
 {
     "python.pythonPath": "C:\\Users\\Mathias\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe",
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "python.linting.mypyArgs": [
+        "--ignore-missing-imports",
+        "--follow-imports=silent",
+        "--show-column-numbers",
+        "--extension-pkg-whitelist=cv2"
+      ],
+    "python.linting.pylintArgs":["--extension-pkg-whitelist=cv2"]
 }

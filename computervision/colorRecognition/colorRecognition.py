@@ -10,11 +10,11 @@ def boundingBoxFinder(path):
     image = cv2.imread(path)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    cv2.namedWindow('Tracking', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('Tracking', 600,600)
-    cv2.imshow('Tracking', image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.namedWindow('Tracking', cv2.WINDOW_NORMAL)
+    # cv2.resizeWindow('Tracking', 600,600)
+    # cv2.imshow('Tracking', image)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
 
     #HSV range for the color red
     lower_red = np.array([161, 155, 84])
@@ -46,13 +46,13 @@ def boundingBoxFinder(path):
     image = cv2.rectangle(image, (int (biggestBox[1]), int (biggestBox[2])), (int (biggestBox[1]) + int (biggestBox[3]), int (biggestBox[2]) + int (biggestBox[4])),(0,0,255), 5)
 
     #Coords for the bounding box converts from float to integer
-    firstCoord = (int (biggestBox[1]), int (biggestBox[2]))
-    secondCoord = (int (biggestBox[1] + biggestBox[3]), int (biggestBox[2]))
-    thirdCoord = (int (biggestBox[1]), int (biggestBox[2] + biggestBox[4]))
-    fourthCoord = (int (biggestBox[1] + biggestBox[3]), int (biggestBox[2] + biggestBox[4]))
+    firstCoord = np.array([int (biggestBox[1]), int (biggestBox[2])])
+    secondCoord = np.array([int (biggestBox[1] + biggestBox[3]), int (biggestBox[2])])
+    thirdCoord = np.array([int (biggestBox[1]), int (biggestBox[2] + biggestBox[4])])
+    fourthCoord = np.array([int (biggestBox[1] + biggestBox[3]), int (biggestBox[2] + biggestBox[4])])
 
     #Coords inserted into a tuple
-    coords = (firstCoord, secondCoord, thirdCoord, fourthCoord)
+    coords = np.array([firstCoord, secondCoord, thirdCoord, fourthCoord])
 
     #Output windows
     """
@@ -67,5 +67,4 @@ def boundingBoxFinder(path):
     cv2.destroyAllWindows()
     """
 
-def returnCoords():
     return coords
