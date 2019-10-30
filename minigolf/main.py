@@ -38,8 +38,31 @@ def justPressed():
     return False
 
 # Motor input
-angle = 90
-shootSpeed = 1000
+angle = 30
+shootSpeed = 350
+direction = 40
+
+#Calibrate Dir
+def calibrateDir():
+    # Run motors until stalled
+    directionMotor.run(30)
+
+    # Wait until motors are stalled
+    while not directionMotor.stalled():
+        pass
+    # Stop stall
+    directionMotor.stop(Stop.HOLD)
+
+    # Reset to straight
+    directionMotor.run_angle(30, -54, Stop.COAST, True)
+
+    # Set motor angle to zero to make it easier to calculate target angles 
+    directionMotor.reset_angle(0)
+
+    #wait two seconds before swing calibration
+    wait(2000)
+    brick.sound.beep(700)
+# End
 
 # Zero
 def calibrate():
@@ -83,6 +106,10 @@ def ready(angle: int):
 
 # End
 
+def setDirection(direction: int):
+    directionMotor.run_angle(30, direction, Stop.HOLD, True)
+    wait(2000)
+
 def shoot(speed: int):
     for m in swingMotors: m.run(speed)
     Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
@@ -94,9 +121,12 @@ def shoot(speed: int):
     wait(250)
 # End
 
-
 # MAIN LOOP
 while True:
+    calibrateDir()
+
+    setDirection(-15)
+
     calibrate()
 
     ready(angle)
