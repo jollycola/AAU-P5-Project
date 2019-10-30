@@ -6,6 +6,8 @@ def boundingBoxFinder(path):
     #Path for pictures
     #path = r'C:\Users\choko\OneDrive\Dokumenter\Python\ImageStuff\test.jpg'
 
+    print("Path: " + path)
+
     #Reads the picture by path
     image = cv2.imread(path)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
