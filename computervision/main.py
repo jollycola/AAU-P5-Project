@@ -18,8 +18,11 @@ def main():
 
     # Use openCV to find bounding box
     # coords = (array([1215, 1363]), array([1261, 1363]), array([1215, 1750]), array([1263, 1749])) 
-    coords = boundingBoxFinder(image_path)
-
+    try:
+        coords = boundingBoxFinder(image_path)
+    except Exception as err:
+        exit(err)
+    
     # Calculate distance from bounding box
     distance = distCalc.calculateDistance(coords)
 

@@ -24,7 +24,7 @@ def boundingBoxFinder(path):
 
     #Mask after the HSV colors and contours 
     mask = cv2.inRange(hsv, lower_red, upper_red)
-    (contours,_) = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    (_,contours,_) = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     i = 0
     biggestBox = []
@@ -45,7 +45,10 @@ def boundingBoxFinder(path):
             i = i + 1
 
     #Creates a rectangle on the biggest colored object
-    image = cv2.rectangle(image, (int (biggestBox[1]), int (biggestBox[2])), (int (biggestBox[1]) + int (biggestBox[3]), int (biggestBox[2]) + int (biggestBox[4])),(0,0,255), 5)
+    # image = cv2.rectangle(image, (int (biggestBox[1]), int (biggestBox[2])), (int (biggestBox[1]) + int (biggestBox[3]), int (biggestBox[2]) + int (biggestBox[4])),(0,0,255), 5)
+
+    if (len(biggestBox) == 0):
+        raise Exception("Error: No red objects found!")
 
     #Coords for the bounding box converts from float to integer
     firstCoord = np.array([int (biggestBox[1]), int (biggestBox[2])])
