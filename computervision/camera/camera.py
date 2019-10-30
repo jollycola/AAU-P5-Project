@@ -8,7 +8,7 @@ def takePicture(path: str):
     assert('linux' in sys.platform), "This code only runs on linux"
 
     print("Taking picture...")
-    os.system(cameraCommand)
+    os.system(cameraCommand + path)
     print("Picture taken: '" + path + "'")
 
     return path
