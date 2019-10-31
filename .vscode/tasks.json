@@ -1,19 +1,17 @@
 {
-    "version": "2.0.0",
-    "command": "py",
-    "args": [
-        "${file}",
-        "${input:pixelHeight}"
-    ],
-    "problemMatchers": [],
-    "inputs": [
-        {
-          "id": "pixelHeight",
-          "type": "promptString",
-          "description": "Pixel Height"
-          // type specific configuration attributes
-        }
-      ]
-    
-
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label":    "Run Tests  ",
+      "type":     "shell",
+      "command":  "py ./computervision/test.py -v",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      }
+    },
+  ]
 }

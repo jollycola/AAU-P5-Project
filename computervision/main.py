@@ -1,13 +1,14 @@
-import camera.camera as camera
-import imagecal.distanceCalc as distCalc
-import imagecal.directionCalc as dirCalc
-from colorRecognition.colorRecognition import boundingBoxFinder
-
 import os
 
-from numpy import array
+import camera.camera as camera
+import imagecal.distance_calc as distCalc
+import imagecal.direction_calc as dirCalc
+from colorRecognition.colorRecognition import boundingBoxFinder
+
 
 def main():
+    ''' Run the computer vision program '''
+
     # Take image
     try:
         image_path = camera.takePicture("image.jpg")
@@ -24,10 +25,10 @@ def main():
         exit(err)
     
     # Calculate distance from bounding box
-    distance = distCalc.calculateDistance(coords)
+    distance = distCalc.calculate_distance(coords)
 
     # Calculate direction from bounding box
-    direction = dirCalc.calculateDirection(coords)
+    direction = dirCalc.calculate_direction(coords)
 
     # Send calculated dist and dir to connected PC
     print("Done!")
