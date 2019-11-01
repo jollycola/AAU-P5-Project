@@ -1,7 +1,7 @@
 #!/usr/bin/env pybricks-micropython
-
 from threading import Thread
 from pybricks import ev3brick as brick
+
 from pybricks.ev3devices import (Motor, TouchSensor, ColorSensor,
                                  InfraredSensor, UltrasonicSensor, GyroSensor)
 from pybricks.parameters import (Port, Stop, Direction, Button, Color,
@@ -9,55 +9,39 @@ from pybricks.parameters import (Port, Stop, Direction, Button, Color,
 from pybricks.tools import print as pyPrint, wait, StopWatch
 from pybricks.robotics import DriveBase
 
-import util
-import time
+
 
 # Setup
-swingMotor      = Motor(Port.B, Direction.COUNTERCLOCKWISE, [3, 1])
-swingMotor1     = Motor(Port.A, Direction.COUNTERCLOCKWISE, [3, 1])
-swingMotor2     = Motor(Port.C, Direction.COUNTERCLOCKWISE, [3, 1])
-directionMotor  = Motor(Port.D)
+SWING_MOTOR = Motor(Port.B, Direction.COUNTERCLOCKWISE, [3, 1])
+SWING_MOTOR_1 = Motor(Port.A, Direction.COUNTERCLOCKWISE, [3, 1])
+SWING_MOTOR_2 = Motor(Port.C, Direction.COUNTERCLOCKWISE, [3, 1])
+DIRECTION_MOTOR = Motor(Port.D)
 
-button = TouchSensor(Port.S4)
+TOUCH_BUTTON = TouchSensor(Port.S4)
 
-swingMotors = [swingMotor, swingMotor1, swingMotor2]
-f = open("output.csv", "w")
-
-
-pressed = False
-
-def justPressed():
-    global pressed
-    if button.pressed():
-        if not pressed:
-            pressed = True
-            return True
-    else:
-        pressed = False
-
-    return False
+SWING_MOTORS = [SWING_MOTOR, SWING_MOTOR_1, SWING_MOTOR_2]
 
 # Motor input
-angle = 30
-shootSpeed = 350
-direction = 40
+ANGLE = 30
+SHOOT_SPEED = 350
+SHOOT_DIRECTION = 40
 
 #Calibrate Dir
-def calibrateDir():
+def calibrate_dir():
+    ''' Calibrate direction motor '''
     # Run motors until stalled
-    directionMotor.run(30)
+    DIRECTION_MOTOR.run(30)
 
-    # Wait until motors are stalled
-    while not directionMotor.stalled():
+    while not DIRECTION_MOTOR.stalled():
         pass
-    # Stop stall
-    directionMotor.stop(Stop.HOLD)
+
+    DIRECTION_MOTOR.stop(Stop.HOLD)
 
     # Reset to straight
-    directionMotor.run_angle(30, -54, Stop.COAST, True)
+    DIRECTION_MOTOR.run_angle(30, -54, Stop.COAST, True)
 
-    # Set motor angle to zero to make it easier to calculate target angles 
-    directionMotor.reset_angle(0)
+    # Set motor angle to zero to make it easier to calculate target angles
+    DIRECTION_MOTOR.reset_angle(0)
 
     #wait two seconds before swing calibration
     wait(2000)
@@ -65,74 +49,72 @@ def calibrateDir():
 # End
 
 # Zero
-def calibrate():
+def calibrate_swing():
+    ''' Callibrate swing motors '''
     # Run motors until stalled
-    for m in swingMotors: 
+    for m in SWING_MOTORS:
         m.run(-500)
 
-    ## Wait until motors are stalled
-    while not swingMotor.stalled():
+    while not SWING_MOTOR.stalled():
         pass
 
     # Motors will "overtighten", so run them forward a bit
-    for m in swingMotors:
+    for m in SWING_MOTORS:
         m.run_angle(100, 30, Stop.HOLD, False)
-        
-    ## Give motors 1 second to adjust 
+
+    ## Give motors 1 second to adjust
     wait(1000)
 
-    # Set motor angle to zero to make it easier to calculate target angles 
-    for m in swingMotors: 
+    # Set motor angle to zero to make it easier to calculate target angles
+    for m in SWING_MOTORS:
         m.reset_angle(0)
-    
+
     brick.sound.beep(700)
 # End
 
-def ready(angle: int):
+def ready_swing(angle: int):
+    ''' Ready the swing arm to the specified angle '''
+    
     # Adjust motors to hit angle
-    for m in swingMotors:
+    for m in SWING_MOTORS:
         m.run_target(100, angle, Stop.HOLD, False)
 
     # Keep running until middle motor is in corecct position
-    while abs(swingMotor.angle() - angle) > 1:
-        for m in swingMotors: m.track_target(angle)
+    while abs(SWING_MOTOR.angle() - angle) > 1:
+        for m in SWING_MOTORS: m.track_target(angle)
 
     # Start new thread to play sound
     Thread(target=brick.sound.file, args=(SoundFile.CONFIRM, 50)).start()
 
     # Wait for button press
-    while not button.pressed():
-        for m in swingMotors: m.track_target(angle)
+    while not TOUCH_BUTTON.pressed():
+        for m in SWING_MOTORS: m.track_target(angle)
 
 # End
 
 def setDirection(direction: int):
-    directionMotor.run_angle(30, direction, Stop.HOLD, True)
+    DIRECTION_MOTOR.run_angle(30, direction, Stop.HOLD, True)
     wait(2000)
 
 def shoot(speed: int):
-    for m in swingMotors: m.run(speed)
+    for m in SWING_MOTORS: m.run(speed)
     Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
 
-    while not swingMotor.stalled():
+    while not SWING_MOTOR.stalled():
         pass
 
-    for m in swingMotors: m.stop()
+    for m in SWING_MOTORS: m.stop()
     wait(250)
 # End
 
 # MAIN LOOP
 while True:
-    calibrateDir()
+    calibrate_dir()
 
     setDirection(-15)
 
-    calibrate()
+    calibrate_swing()
 
-    ready(angle)
+    ready_swing(ANGLE)
 
-    shoot(shootSpeed)
-
-
-# Wrapup
-f.close()
+    shoot(SHOOT_SPEED)
