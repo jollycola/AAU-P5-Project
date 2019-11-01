@@ -4,19 +4,11 @@ import array as arr
 
 def boundingBoxFinder(path):
     #Path for pictures
-    #path = r'C:\Users\choko\OneDrive\Dokumenter\Python\ImageStuff\test.jpg'
-
     print("Path: " + path)
 
-    #Reads the picture by path
+    #Reads the picture by path and converts the color system to HSV
     image = cv2.imread(path)
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-    # cv2.namedWindow('Tracking', cv2.WINDOW_NORMAL)
-    # cv2.resizeWindow('Tracking', 600,600)
-    # cv2.imshow('Tracking', image)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
 
     #HSV range for the color red
     lower_red = np.array([161, 155, 84])
@@ -37,16 +29,16 @@ def boundingBoxFinder(path):
         if(area > 800):
             x, y, w, h = cv2.boundingRect(contour)
             box = arr.array('f', [area, x, y, w, h])
-
-            if(box[0] >= biggestArea): 
+            
+            #Checks if the new area is the biggest are, and if the box has the same width, height ratio as the flag with some deviation.
+            if(box[0] >= biggestArea && (((box[3] * 10) - box[2]) < 30) && (((box[3] * 10) - box[2]) > -30)): 
                 biggestArea = box[0]       
                 biggestBox = arr.array('f', [box[0], box[1], box[2], box[3], box[4]])
     
             i = i + 1
 
-    #Creates a rectangle on the biggest colored object
-    # image = cv2.rectangle(image, (int (biggestBox[1]), int (biggestBox[2])), (int (biggestBox[1]) + int (biggestBox[3]), int (biggestBox[2]) + int (biggestBox[4])),(0,0,255), 5)
 
+    #informs if no red box was found
     if (len(biggestBox) == 0):
         raise Exception("Error: No red objects found!")
 
