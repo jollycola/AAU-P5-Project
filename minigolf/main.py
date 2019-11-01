@@ -9,6 +9,7 @@ from pybricks.parameters import (Port, Stop, Direction, Button, Color,
 from pybricks.tools import print as pyPrint, wait, StopWatch
 from pybricks.robotics import DriveBase
 
+from my_util import (play_sound_in_background)
 
 
 # Setup
@@ -26,7 +27,9 @@ ANGLE = 30
 SHOOT_SPEED = 350
 SHOOT_DIRECTION = 40
 
-#Calibrate Dir
+# Calibrate Dir
+
+
 def calibrate_dir():
     ''' Calibrate direction motor '''
     # Run motors until stalled
@@ -43,12 +46,14 @@ def calibrate_dir():
     # Set motor angle to zero to make it easier to calculate target angles
     DIRECTION_MOTOR.reset_angle(0)
 
-    #wait two seconds before swing calibration
+    # wait two seconds before swing calibration
     wait(2000)
     brick.sound.beep(700)
 # End
 
 # Zero
+
+
 def calibrate_swing():
     ''' Callibrate swing motors '''
     # Run motors until stalled
@@ -62,7 +67,7 @@ def calibrate_swing():
     for m in SWING_MOTORS:
         m.run_angle(100, 30, Stop.HOLD, False)
 
-    ## Give motors 1 second to adjust
+    # Give motors 1 second to adjust
     wait(1000)
 
     # Set motor angle to zero to make it easier to calculate target angles
@@ -72,40 +77,55 @@ def calibrate_swing():
     brick.sound.beep(700)
 # End
 
+
 def ready_swing(angle: int):
     ''' Ready the swing arm to the specified angle '''
-    
+
     # Adjust motors to hit angle
     for m in SWING_MOTORS:
         m.run_target(100, angle, Stop.HOLD, False)
 
     # Keep running until middle motor is in corecct position
-    while abs(SWING_MOTOR.angle() - angle) > 1:
-        for m in SWING_MOTORS: m.track_target(angle)
+    time = StopWatch()
+    while abs(SWING_MOTOR.angle() - angle) > 2:
+        for m in SWING_MOTORS:
+            m.track_target(angle)
 
-    # Start new thread to play sound
-    Thread(target=brick.sound.file, args=(SoundFile.CONFIRM, 50)).start()
+        # Stop adjusting if stuck for more than 2 seconds
+        if time.time() > 2000:
+            pyPrint("Used more than 2 seconds adjusting, stopping at angle: %d" %
+                    abs(SWING_MOTOR.angle() - angle))
+            break
+
+    # Play confirm sound
+    play_sound_in_background(SoundFile.CONFIRM, 50)
 
     # Wait for button press
     while not TOUCH_BUTTON.pressed():
-        for m in SWING_MOTORS: m.track_target(angle)
+        for m in SWING_MOTORS:
+            m.track_target(angle)
 
 # End
+
 
 def setDirection(direction: int):
     DIRECTION_MOTOR.run_angle(30, direction, Stop.HOLD, True)
     wait(2000)
 
+
 def shoot(speed: int):
-    for m in SWING_MOTORS: m.run(speed)
+    for m in SWING_MOTORS:
+        m.run(speed)
     Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
 
     while not SWING_MOTOR.stalled():
         pass
 
-    for m in SWING_MOTORS: m.stop()
+    for m in SWING_MOTORS:
+        m.stop()
     wait(250)
 # End
+
 
 # MAIN LOOP
 while True:
