@@ -55,7 +55,7 @@ def calibrate_dir():
 
 
 def calibrate_swing():
-    ''' Callibrate swing motors '''
+    ''' Calibrate swing motors '''
     # Run motors until stalled
     for m in SWING_MOTORS:
         m.run(-500)
