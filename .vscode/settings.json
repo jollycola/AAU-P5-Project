@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Mathias\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
+    "python.pythonPath": "C:\\Users\\Mathias\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe",
     "python.linting.enabled": true,
     "python.linting.mypyArgs": [
         "--ignore-missing-imports",
@@ -13,7 +13,7 @@
     "python.testing.unittestArgs": [
       "-v",
       "-s",
-      "./computervision",
+      "./test",
       "-p",
       "test*.py"
     ],
