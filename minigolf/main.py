@@ -16,7 +16,7 @@ from my_util import (play_sound_in_background)
 SWING_MOTOR = Motor(Port.B, Direction.COUNTERCLOCKWISE, [3, 1])
 SWING_MOTOR_1 = Motor(Port.A, Direction.COUNTERCLOCKWISE, [3, 1])
 SWING_MOTOR_2 = Motor(Port.C, Direction.COUNTERCLOCKWISE, [3, 1])
-DIRECTION_MOTOR = Motor(Port.D)
+DIRECTION_MOTOR = Motor(Port.D, Direction.COUNTERCLOCKWISE, [1, 3])
 
 TOUCH_BUTTON = TouchSensor(Port.S4)
 
@@ -24,8 +24,8 @@ SWING_MOTORS = [SWING_MOTOR, SWING_MOTOR_1, SWING_MOTOR_2]
 
 # Motor input
 ANGLE = 30
-SHOOT_SPEED = 350
-SHOOT_DIRECTION = 40
+SHOOT_SPEED = 4000
+SHOOT_DIRECTION = 0
 
 # Calibrate Dir
 
@@ -33,12 +33,16 @@ SHOOT_DIRECTION = 40
 def calibrate_dir():
     ''' Calibrate direction motor '''
     # Run motors until stalled
+    DIRECTION_MOTOR.set_dc_settings(30, 0)
+
     DIRECTION_MOTOR.run(30)
 
     while not DIRECTION_MOTOR.stalled():
         pass
 
     DIRECTION_MOTOR.stop(Stop.HOLD)
+
+    DIRECTION_MOTOR.set_dc_settings(100, 0)
 
     # Reset to straight
     DIRECTION_MOTOR.run_angle(30, -54, Stop.COAST, True)
@@ -131,7 +135,7 @@ def shoot(speed: int):
 while True:
     calibrate_dir()
 
-    setDirection(-15)
+    setDirection(SHOOT_DIRECTION)
 
     calibrate_swing()
 
