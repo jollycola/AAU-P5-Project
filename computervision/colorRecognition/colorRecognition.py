@@ -31,7 +31,7 @@ def boundingBoxFinder(path):
             box = arr.array('f', [area, x, y, w, h])
             
             #Checks if the new area is the biggest are, and if the box has the same width, height ratio as the flag with some deviation.
-            if(box[0] >= biggestArea && (((box[3] * 10) - box[2]) < 30) && (((box[3] * 10) - box[2]) > -30)): 
+            if(box[0] >= biggestArea and (((box[3] * 10) - box[2]) < 30) && (((box[3] * 10) - box[2]) > -30)): 
                 biggestArea = box[0]       
                 biggestBox = arr.array('f', [box[0], box[1], box[2], box[3], box[4]])
     
