@@ -3,7 +3,8 @@ import os
 import camera.camera as camera
 import imagecal.distance_calc as distCalc
 import imagecal.direction_calc as dirCalc
-from colorRecognition.colorRecognition import boundingBoxFinder
+
+from colorRecognition.colorRecognition import (boundingBoxFinder)
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
         coords = boundingBoxFinder(image_path)
     except Exception as err:
         exit(err)
-    
+
     # Calculate distance from bounding box
     distance = distCalc.calculate_distance(coords)
 

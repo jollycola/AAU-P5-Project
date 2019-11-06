@@ -15,6 +15,5 @@ class Test(unittest.TestCase):
         self.assertAlmostEqual(dirCalc.calculate_direction(self.coords), -7.6232, delta=0.0001)
 
 
-
 if __name__ == '__main__':
     unittest.main() 
