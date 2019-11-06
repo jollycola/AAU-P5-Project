@@ -1,7 +1,6 @@
-import sys
 import math
 
-from .CONSTANTS import *
+from .CONSTANTS import (FOCAL_LENGTH, OBJECT_REAL_HEIGHT, IMAGE_HEIGHT, SENSOR_HEIGHT)
 
 
 def calculate_distance(coords):
@@ -13,7 +12,7 @@ def calculate_distance(coords):
 
     Returns:
     int: The distance from the camera to the object
-     
+
     """
 
     object_pixel_height = __calculate_pixel_height(coords)
@@ -25,12 +24,10 @@ def calculate_distance(coords):
 
 def __calculate_pixel_height(coords):
     height1 = math.sqrt(
-        math.pow((coords[0][0] - coords[2][0]), 2) +
-        math.pow((coords[0][1] - coords[2][1]), 2))
+        math.pow((coords[0][0] - coords[2][0]), 2) + math.pow((coords[0][1] - coords[2][1]), 2))
 
     height2 = math.sqrt(
-        math.pow((coords[1][0] - coords[3][0]), 2) +
-        math.pow((coords[1][1] - coords[3][1]), 2))
+        math.pow((coords[1][0] - coords[3][0]), 2) + math.pow((coords[1][1] - coords[3][1]), 2))
 
     return (height1 + height2) / 2.0
 # END

@@ -1,12 +1,13 @@
 from numpy import array
 
-from .CONSTANTS import *
+from CONSTANTS import (FOV, IMAGE_WIDTH)
 
 DPP = (FOV / IMAGE_WIDTH)
 
+
 def __calculate_object_center(coords: array):
-    return ((coords[0] + coords[1]))/2
-#END
+    return ((coords[0] + coords[1])) / 2
+# END
 
 
 def calculate_direction(coords: array):
@@ -23,5 +24,5 @@ def calculate_direction(coords: array):
     # converts any array_like into a numpy array
     _coords = array(coords)
 
-    return DPP * (__calculate_object_center(_coords)[0] - IMAGE_WIDTH/2)
+    return DPP * (__calculate_object_center(_coords)[0] - IMAGE_WIDTH / 2)
 # END

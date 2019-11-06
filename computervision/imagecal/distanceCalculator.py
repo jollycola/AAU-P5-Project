@@ -4,27 +4,31 @@ imageHeight = 2464
 objectPixelHeight = 1
 sensorHeight = 2.76
 
+
 def calculateResult():
-    result = (focalLength*objectRealHeight*imageHeight)/(objectPixelHeight*sensorHeight)
-    print("Distance to object is %d" %result)
+    result = (focalLength * objectRealHeight * imageHeight) / (objectPixelHeight * sensorHeight)
+    print("Distance to object is %d" % result)
     print("Enter actual distance to calculate deviance or press enter to return to main manu")
     choice = input()
     if isinstance(choice, float) or isinstance(choice, int):
         calculateDeviance(result, choice)
 
+
 def calculateDeviance(actual, expected):
     result = ((expected - actual) / actual) * 100
-    print("Deviance is %f %%" %result)
+    print("Deviance is %f %%" % result)
+
 
 def changeVar(varToChange, varName):
-    print("Enter value to change %s" %varName)
+    print("Enter value to change %s" % varName)
     oldValue = varToChange
     newValue = input()
     varToChange = newValue
     print("Set %s to %s from %s" % (varName, varToChange, oldValue))
     return varToChange
 
-##"Main" starts here##
+
+# "Main" starts here #
 choice = ""
 
 while choice != 6:
