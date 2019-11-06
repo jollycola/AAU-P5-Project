@@ -23,8 +23,8 @@ jobs:
         pip install -r requirements.txt
     - name: Linting
       run: |
-        pip install pylint
-        pylint computervision
+        pip install flake8
+        flake8
     - name: Test with unittest
       run: |
         python -m unittest discover -s "./test" -p "test*.py"
