@@ -88,8 +88,7 @@ class Robot:
 
             # Stop adjusting if stuck for more than 2 seconds
             if time.time() > 2000:
-                pyPrint("Used more than 2 seconds adjusting, stopping at angle: %d" %
-                        abs(SWING_MOTOR.angle() - angle))
+                print("Used more than 2 seconds adjusting, stopping at angle: %d" % abs(SWING_MOTOR.angle() - angle))
                 break
 
         # Play confirm sound
