@@ -2,7 +2,6 @@ import unittest
 
 from imagecal import (distance_calc as distCalc, direction_calc as dirCalc)
 
-
 class Test(unittest.TestCase):
     def setUp(self):
         self.coords = [[1215, 1363], [1261, 1363], [1215, 1750], [1263, 1749]]
