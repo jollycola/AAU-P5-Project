@@ -13,7 +13,6 @@ robot.calibrate_swing()
 # MAIN LOOP
 while True:
 
-
     robot.wait_for_button()
     connection.send_data_to_client("READY")
 
