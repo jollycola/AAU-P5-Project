@@ -32,4 +32,4 @@ jobs:
         flake8 ./ev3
     - name: Raspi Unit Tests
       run: |
-        python -m unittest discover -s "./raspi/test" -p "test*.py"
+        unittest discover -s "./raspi/test" -p "test*.py"
