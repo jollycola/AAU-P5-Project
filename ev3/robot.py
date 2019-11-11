@@ -25,7 +25,8 @@ SWING_MOTORS = [SWING_MOTOR, SWING_MOTOR_1, SWING_MOTOR_2]
 
 
 class Robot:
-    def calibrate_dir():
+
+    def calibrate_dir(self):
         ''' Calibrate direction motor '''
         # Run motors until stalled
         DIRECTION_MOTOR.set_dc_settings(30, 0)
@@ -50,7 +51,7 @@ class Robot:
         brick.sound.beep(700)
     # End
 
-    def calibrate_swing():
+    def calibrate_swing(self):
         ''' Calibrate swing motors '''
         # Run motors until stalled
         for m in SWING_MOTORS:
@@ -73,7 +74,7 @@ class Robot:
         brick.sound.beep(700)
     # End
 
-    def ready_swing(angle: int):
+    def ready_swing(self, angle: int):
         ''' Ready the swing arm to the specified angle '''
 
         # Adjust motors to hit angle
@@ -100,12 +101,12 @@ class Robot:
                 m.track_target(angle)
     # End
 
-    def setDirection(direction: int):
+    def setDirection(self, direction: int):
         DIRECTION_MOTOR.run_angle(30, direction, Stop.HOLD, True)
         wait(2000)
     # End
 
-    def shoot(speed: int):
+    def shoot(self, speed: int):
         for m in SWING_MOTORS:
             m.run(speed)
         Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
