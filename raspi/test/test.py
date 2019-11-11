@@ -1,8 +1,6 @@
 import unittest
 
-import imagecal.distance_calc as distCalc
-import imagecal.direction_calc as dirCalc
-
+from imagecal import (distance_calc as distCalc, direction_calc as dirCalc)
 
 class Test(unittest.TestCase):
     def setUp(self):
