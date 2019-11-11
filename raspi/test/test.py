@@ -1,7 +1,7 @@
 import unittest
 
-import computervision.imagecal.distance_calc as distCalc
-import computervision.imagecal.direction_calc as dirCalc
+import imagecal.distance_calc as distCalc
+import imagecal.direction_calc as dirCalc
 
 
 class Test(unittest.TestCase):
