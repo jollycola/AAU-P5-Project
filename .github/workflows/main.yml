@@ -30,6 +30,6 @@ jobs:
     - name: Raspi Project Linting
       run: |
         flake8 ./ev3
-    - name: Test with unittest
+    - name: Raspi Unit Tests
       run: |
-        python -m unittest discover -s "./test" -p "test*.py"
+        python -m unittest discover -s "./raspi/test" -p "test*.py"
