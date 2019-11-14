@@ -10,7 +10,7 @@ while True:
 
     robot.wait_for_button()
 
-    (direction, power, angle) = (0, 4000, 10) # Accept data from raspi
+    (direction, power, angle) = (0, 4000, 10)  # Accept data from raspi
 
     robot.setDirection(direction)
 
@@ -19,5 +19,3 @@ while True:
     robot.wait_for_button()
 
     robot.shoot(power)
-
-

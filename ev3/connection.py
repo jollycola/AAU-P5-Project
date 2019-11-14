@@ -6,25 +6,25 @@ import socket
 class Connection:
 
     def __init__(self, host, port):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = (host, port)
 
     def connection_to_server(self):
         print("Connecting to server on '%s:%s'" % self.server_address)
-        self.sock.connect(self.server_address)
+        self.server_socket.connect(self.server_address)
 
     def start_server(self):
         print("Starting server on '%s:%s'" % self.server_address)
-        self.sock.bind(self.server_address)
-        self.sock.listen(5)
+        self.server_socket.bind(self.server_address)
+        self.server_socket.listen(5)
 
     def stop_server(self):
         print("Stopping server")
-        self.sock.close()
+        self.server_socket.close()
 
     def wait_for_connection(self):
         while True:
-            self.connection, self.client_address = self.sock.accept()
+            self.connection, self.client_address = self.server_socket.accept()
             if self.connection:
                 print("Connection from ", self.client_address)
                 return
@@ -36,7 +36,7 @@ class Connection:
 
 
     def send_data_to_server(self, message):
-        self.sock.send(message)
+        self.server_socket.send(message)
 
 
     def wait_for_data(self):
