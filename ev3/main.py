@@ -1,5 +1,12 @@
 #!/usr/bin/env pybricks-micropython
 from robot import Robot
+from connection.server import Server
+
+connection = Server("10.42.0.3", 1234)
+connection.start_server()
+
+# Wait for connection from a client
+connection.wait_for_connection()
 
 robot = Robot()
 robot.calibrate_dir()

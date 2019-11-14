@@ -1,17 +1,12 @@
-#!/usr/bin/env pybricks-micropython
-
 import socket
 
 
-class Connection:
+class Server:
+    '''Server socket class'''
 
     def __init__(self, host, port):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = (host, port)
-
-    def connection_to_server(self):
-        print("Connecting to server on '%s:%s'" % self.server_address)
-        self.server_socket.connect(self.server_address)
 
     def start_server(self):
         print("Starting server on '%s:%s'" % self.server_address)
@@ -29,15 +24,9 @@ class Connection:
                 print("Connection from ", self.client_address)
                 return
 
-
     def send_data_to_client(self, message):
         assert(self.connection)
         self.connection.send(message.encode())
-
-
-    def send_data_to_server(self, message):
-        self.server_socket.send(message)
-
 
     def wait_for_data(self):
         assert(self.connection)
@@ -54,7 +43,6 @@ class Connection:
         except Exception:
             self.connection.close()
         # END
-
 
     def parse_data(data: str):
         strings = data.split(",")
