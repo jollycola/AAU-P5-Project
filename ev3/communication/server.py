@@ -32,7 +32,7 @@ class Server:
         assert(self.connection)
         try:
             while True:
-                data = self.connection.recv(16)
+                data = self.connection.recv(16) 
                 print("Received %s" % data.decode())
 
                 if data:

@@ -16,4 +16,7 @@ class Client:
     def wait_for_ready(self, string):
         '''Waits until the specified string is received'''
         while True:
-            data = self.client_socket.recv
+            data = self.client_socket.recv(16).decode
+            print("Received %s, expected %s" % data, string)
+            if data != string:
+                raise 
