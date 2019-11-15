@@ -26,6 +26,9 @@ SWING_MOTORS = [SWING_MOTOR, SWING_MOTOR_1, SWING_MOTOR_2]
 
 class Robot:
 
+    def beep(self, frequency=700):
+        brick.sound.beep(frequency)
+
     def calibrate_dir(self):
         ''' Calibrate direction motor '''
         # Run motors until stalled
@@ -120,7 +123,7 @@ class Robot:
     # End
 
 
-    def wait_for_button():
+    def wait_for_button(self):
         while not TOUCH_BUTTON.pressed():
             pass
     # End
