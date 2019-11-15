@@ -19,7 +19,7 @@ class Client:
         '''Waits until the specified string is received'''
         while True:
             data = self.client_socket.recv(16).decode()
-            print("Received %s, expected %s" % data, string)
+            print("Received %s, expected %s" % (data, string))
             assert data == string
             break
 

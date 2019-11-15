@@ -29,9 +29,11 @@ class Server:
         self.connection.send(message.encode())
 
     def wait_for_data(self):
-        assert(self.connection)
+        assert self.connection
+        print("assert complete")
         try:
             while True:
+                print("start receiving data")
                 data = self.connection.recv(16) 
                 print("Received %s" % data.decode())
 
