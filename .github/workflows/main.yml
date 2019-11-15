@@ -26,7 +26,7 @@ jobs:
         pip install flake8
     - name: Raspi Project Linting
       run: |
-        flake8 ./raspi
+        pylint raspi
     - name: Raspi Project Linting
       run: |
-        flake8 ./ev3
+        pylint ev3
