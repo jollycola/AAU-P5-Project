@@ -18,7 +18,8 @@ def boundingBoxFinder(path):
 
     # Mask after the HSV colors and contours 
     mask = cv2.inRange(hsv, lower_red, upper_red)
-    (contours, _) = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
 
     i = 0
     biggestBox = []
@@ -27,6 +28,8 @@ def boundingBoxFinder(path):
     # Finds the biggest bounding box
     for contour in contours:
         area = cv2.contourArea(contour)
+        
+        print("area: " + str(area))
 
         if(area > 800):
             x, y, w, h = cv2.boundingRect(contour)
@@ -38,6 +41,8 @@ def boundingBoxFinder(path):
                 biggestBox = arr.array('f', [box[0], box[1], box[2], box[3], box[4]])
 
             i = i + 1
+
+    print("biggest box: " + str(biggestBox))
 
     # informs if no red box was found
     if (len(biggestBox) == 0):
