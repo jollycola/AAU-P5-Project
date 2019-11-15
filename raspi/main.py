@@ -1,3 +1,4 @@
+'''Main Raspberry Pi Program'''
 import os
 
 import camera.camera as camera
@@ -27,11 +28,7 @@ def main():
             image_path = os.path.dirname(os.path.abspath(__file__)) + "\\test\\sample.jpg"
 
         # Use openCV to find bounding box
-        # coords = (array([1215, 1363]), array([1261, 1363]), array([1215, 1750]), array([1263, 1749])) 
-        try:
-            coords = boundingBoxFinder(image_path)
-        except Exception as err:
-            exit(err)
+        coords = boundingBoxFinder(image_path)
 
         # Calculate distance from bounding box
         distance = distCalc.calculate_distance(coords)
@@ -44,7 +41,7 @@ def main():
         print("Distance: %i " % distance)
         print("Direction: %i " % direction)
 
-        connection.send_data_to_server(direction, distance * 2, 10)
+        connection.send_data_to_server((direction, distance * 2, 10))
 
 
 if __name__ == "__main__":

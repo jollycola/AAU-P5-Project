@@ -1,6 +1,6 @@
 from numpy import array
 
-from .CONSTANTS import (FOV, IMAGE_WIDTH)
+from .constants import (FOV, IMAGE_WIDTH)
 
 DPP = (FOV / IMAGE_WIDTH)
 

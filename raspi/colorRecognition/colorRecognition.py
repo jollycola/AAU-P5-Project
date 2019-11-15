@@ -51,17 +51,4 @@ def boundingBoxFinder(path):
     # Coords inserted into a tuple
     coords = np.array([firstCoord, secondCoord, thirdCoord, fourthCoord])
 
-    # Output windows
-    """
-    cv2.namedWindow("Detection", cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('Detection', 600,600)
-    cv2.imshow("Detection", mask)
-    cv2.namedWindow('Tracking', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('Tracking', 600,600)
-    cv2.imshow('Tracking', image)
-
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    """
-
     return coords

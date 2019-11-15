@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\Mathias\\AppData\\Local\\Programs\\Python\\Python37-32\\python.exe",
+    "python.pythonPath": "C:\\Users\\Mathias\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
     "python.linting.enabled": true,
     "python.linting.mypyArgs": [
         "--ignore-missing-imports",
@@ -20,6 +20,6 @@
     "python.testing.pytestEnabled": false,
     "python.testing.nosetestsEnabled": false,
     "python.testing.unittestEnabled": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true
+    "python.linting.pylintEnabled": true,
+    "python.linting.flake8Enabled": false
 }

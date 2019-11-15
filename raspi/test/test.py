@@ -1,6 +1,6 @@
 import unittest
 
-from imagecal import (distance_calc as distCalc, direction_calc as dirCalc)
+from ..imagecal import (distance_calc as distCalc, direction_calc as dirCalc)
 
 
 class Test(unittest.TestCase):

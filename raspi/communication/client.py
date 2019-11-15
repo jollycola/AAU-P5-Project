@@ -1,3 +1,4 @@
+'''Module handling the client side of the server/client socket connection'''
 import socket
 
 
@@ -7,6 +8,7 @@ class Client:
     def __init__(self, host, port):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = (host, port)
+        self.connection = None
     # END
 
     def connect_to_server(self):
@@ -18,9 +20,10 @@ class Client:
         while True:
             data = self.client_socket.recv(16).decode()
             print("Received %s, expected %s" % data, string)
-            assert(data == string)
+            assert data == string
             break
 
     def send_data_to_server(self, data):
-        assert(self.connection)
+        '''Sends data to the server'''
+        assert self.connection is not None
         self.connection.send(data.encode())
