@@ -12,11 +12,11 @@ from colorRecognition.colorRecognition import (boundingBoxFinder)
 def main():
     ''' Run the computer vision program '''
 
-    connection = Client("10.42.0.3", 1234)
-    connection.connect_to_server()
+    # connection = Client("10.42.0.3", 1234)
+    # connection.connect_to_server()
 
     while True:
-        connection.wait_for_string("READY")
+        # connection.wait_for_string("READY")
         print("Received READY message")
 
         # Take image
@@ -28,9 +28,9 @@ def main():
             image_path = os.path.dirname(os.path.abspath(__file__)) + "\\test\\sample.jpg"
 
         # Use openCV to find bounding box
-        # coords = boundingBoxFinder(image_path)
+        coords = boundingBoxFinder(image_path)
         
-        coords = [[1215, 1363], [1261, 1363], [1215, 1750], [1263, 1749]]
+        # coords = [[1215, 1363], [1261, 1363], [1215, 1750], [1263, 1749]]
 
         # Calculate distance from bounding box
         distance = distCalc.calculate_distance(coords)
@@ -43,7 +43,8 @@ def main():
         print("Distance: %i " % distance)
         print("Direction: %i " % direction)
         
-        connection.send_data_to_server("%d,%d,%i" % (direction, distance * 2, 10))
+        # connection.send_data_to_server("%d,%d,%i" % (direction, distance * 2, 10))
+        exit()
 
 
 if __name__ == "__main__":
