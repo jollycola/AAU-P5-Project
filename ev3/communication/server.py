@@ -1,5 +1,5 @@
 import socket
-
+from pybricks.tools import (print, wait, StopWatch)
 
 class Server:
     '''Server socket class'''
@@ -38,7 +38,7 @@ class Server:
                 print("Received %s" % data.decode())
 
                 if data:
-                    return self.parse_data(data)
+                    return self.parse_data(data.decode())
                 else:
                     print("No more data")
                     break
@@ -46,8 +46,9 @@ class Server:
             self.connection.close()
         # END
 
-    def parse_data(data: str):
+    def parse_data(self, data):
+        print(data)
         strings = data.split(",")
         assert(len(strings) == 3)
-        return (float(strings[0]), float(strings[1]), float(strings[2]))
+        return (-float(strings[0]), float(strings[1]), float(strings[2]))
     # END

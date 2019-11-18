@@ -88,6 +88,7 @@ class Robot:
         time = StopWatch()
         while abs(SWING_MOTOR.angle() - angle) > 2:
             for m in SWING_MOTORS:
+                wait(10)
                 m.track_target(angle)
 
             # Stop adjusting if stuck for more than 2 seconds
@@ -104,15 +105,15 @@ class Robot:
                 m.track_target(angle)
     # End
 
-    def setDirection(self, direction: int):
-        DIRECTION_MOTOR.run_angle(30, direction, Stop.HOLD, True)
+    def setDirection(self, direction: float):
+        DIRECTION_MOTOR.run_target(30, direction, Stop.HOLD, True)
         wait(2000)
     # End
 
     def shoot(self, speed: int):
         for m in SWING_MOTORS:
             m.run(speed)
-        Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
+        # Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
 
         while not SWING_MOTOR.stalled():
             pass
