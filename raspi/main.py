@@ -12,11 +12,11 @@ from colorRecognition.colorRecognition import (boundingBoxFinder)
 def main():
     ''' Run the computer vision program '''
 
-    # connection = Client("10.42.0.3", 1234)
-    # connection.connect_to_server()
+    connection = Client("10.42.0.3", 1234)
+    connection.connect_to_server()
 
     while True:
-        # connection.wait_for_string("READY")
+        connection.wait_for_string("READY")
         print("Received READY message")
 
         # Take image
@@ -43,7 +43,7 @@ def main():
         print("Distance: %i " % distance)
         print("Direction: %i " % direction)
         
-        # connection.send_data_to_server("%d,%d,%i" % (direction, distance * 2, 10))
+        connection.send_data_to_server("%d,%d,%i" % (direction, distance * 2, 10))
         exit()
 
 
