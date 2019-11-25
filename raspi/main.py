@@ -38,13 +38,15 @@ def main():
         # Calculate direction from bounding box
         direction = dirCalc.calculate_direction(coords)
 
+        
+
         # Send calculated dist and dir to connected PC
         print("Done!")
         print("Distance: %i " % distance)
-        print("Direction: %i " % direction)
+        print("Direction: %f " % direction)
         
-        connection.send_data_to_server("%d,%d,%i" % (direction, distance * 2, 10))
-        exit()
+        connection.send_data_to_server("%.2f,%d,%i" % (direction, distance * 2, 10))
+        # exit()
 
 
 if __name__ == "__main__":

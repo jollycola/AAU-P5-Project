@@ -1,5 +1,5 @@
 import array as arr
-import numpy as np 
+import numpy as np
 
 import cv2
 
@@ -18,8 +18,10 @@ def boundingBoxFinder(path):
 
     # Mask after the HSV colors and contours 
     mask = cv2.inRange(hsv, lower_red, upper_red)
-    contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    _, contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    
 
+    # Finds the biggest bounding box
     biggest_box = _find_biggest_box(contours)
 
     # informs if no red box was found
@@ -35,6 +37,10 @@ def boundingBoxFinder(path):
     # Coords inserted into a tuple
     coords = np.array([first_coord, second_coord, third_coord, fourth_coord])
 
+    img = cv2.rectangle(image, (int(biggest_box[1]), int(biggest_box[2])), (int(biggest_box[1]+biggest_box[3]), int(biggest_box[2]+biggest_box[4])), (0, 255, 0), 2)
+
+    cv2.imwrite("box.jpg", img)
+
     return coords
 
 
@@ -43,8 +49,6 @@ def _find_biggest_box(contours):
     biggest_box = []
     biggest_area = 0
 
-
-    # Finds the biggest bounding box
     for contour in contours:
         area = cv2.contourArea(contour)
 
@@ -65,4 +69,4 @@ def _find_biggest_box(contours):
 def _matches_flag_ratio(height, width):
     flag_height_width_ratio = 7.14
 
-    return abs(height / width - flag_height_width_ratio) < 1
+    return abs(height / width - flag_height_width_ratio) < 3
