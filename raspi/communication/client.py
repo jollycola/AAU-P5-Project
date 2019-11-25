@@ -8,12 +8,11 @@ class Client:
     def __init__(self, host, port):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server_address = (host, port)
-        self.connection = None
     # END
 
     def connect_to_server(self):
         '''Creates a connection to the specified server'''
-        self.connection = self.client_socket.connect(self.server_address)
+        self.client_socket.connect(self.server_address)
 
     def wait_for_string(self, string):
         '''Waits until the specified string is received'''
@@ -25,5 +24,5 @@ class Client:
 
     def send_data_to_server(self, data):
         '''Sends data to the server'''
-        assert self.connection is not None
-        self.connection.send(data.encode())
+        # assert self.connection is not None
+        self.client_socket.send(data.encode())
