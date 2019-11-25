@@ -17,7 +17,7 @@ from my_util import (play_sound_in_background)
 SWING_MOTOR = Motor(Port.B, Direction.COUNTERCLOCKWISE, [3, 1])
 SWING_MOTOR_1 = Motor(Port.A, Direction.COUNTERCLOCKWISE, [3, 1])
 SWING_MOTOR_2 = Motor(Port.C, Direction.COUNTERCLOCKWISE, [3, 1])
-DIRECTION_MOTOR = Motor(Port.D, Direction.COUNTERCLOCKWISE, [1, 3])
+DIRECTION_MOTOR = Motor(Port.D, Direction.CLOCKWISE)
 
 TOUCH_BUTTON = TouchSensor(Port.S4)
 
@@ -34,7 +34,7 @@ class Robot:
         # Run motors until stalled
         DIRECTION_MOTOR.set_dc_settings(30, 0)
 
-        DIRECTION_MOTOR.run(30)
+        DIRECTION_MOTOR.run(-30)
 
         while not DIRECTION_MOTOR.stalled():
             pass
@@ -44,10 +44,12 @@ class Robot:
         DIRECTION_MOTOR.set_dc_settings(100, 0)
 
         # Reset to straight
-        DIRECTION_MOTOR.run_angle(30, -54, Stop.COAST, True)
+        DIRECTION_MOTOR.run_angle(20, 51, Stop.COAST, True)
 
         # Set motor angle to zero to make it easier to calculate target angles
         DIRECTION_MOTOR.reset_angle(0)
+
+        print("Angle reset: " + str(DIRECTION_MOTOR.angle()))
 
         # wait two seconds before swing calibration
         wait(2000)
@@ -104,9 +106,12 @@ class Robot:
                 m.track_target(angle)
     # End
 
-    def setDirection(self, direction: int):
-        DIRECTION_MOTOR.run_angle(30, direction, Stop.HOLD, True)
-        wait(2000)
+    def setDirection(self, direction):
+        print("Setting direction to: " + str(direction))
+        
+        DIRECTION_MOTOR.run_target(30, direction, Stop.COAST, True)
+             
+        print("Ready to shoot, angle: " + str(DIRECTION_MOTOR.angle()))
     # End
 
     def shoot(self, speed: int):
