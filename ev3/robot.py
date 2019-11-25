@@ -129,6 +129,24 @@ class Robot:
         wait(250)
     # End
 
+    def wait_for_power_select(self, power=0, steps=50):
+        while not TOUCH_BUTTON.pressed():
+            # TODO: Power selection via buttons and display
+            if Button.LEFT in brick.buttons():
+                power += steps
+            elif Button.RIGHT in brick.buttons():
+                power -= steps
+                
+            if power < 0:
+                power = 0
+            elif power > 4000:
+                power = 4000
+
+            brick.display.clear()
+            brick.display.text("Power: " + str(power), (60, 50))
+
+        return power
+    # End
 
     def wait_for_button(self):
         while not TOUCH_BUTTON.pressed():
