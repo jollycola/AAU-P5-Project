@@ -32,11 +32,15 @@ class Robot:
     def calibrate_dir(self):
         ''' Calibrate direction motor '''
         # Run motors until stalled
-        DIRECTION_MOTOR.set_dc_settings(30, 0)
+        # DIRECTION_MOTOR.set_dc_settings(55, 0)
 
-        DIRECTION_MOTOR.run(-30)
+        # DIRECTION_MOTOR.run(-90)
 
-        while not DIRECTION_MOTOR.stalled():
+        DIRECTION_MOTOR.dc(-50)
+
+        wait(300)
+
+        while not DIRECTION_MOTOR.speed() == 0:
             pass
 
         DIRECTION_MOTOR.stop(Stop.HOLD)
@@ -44,9 +48,10 @@ class Robot:
         DIRECTION_MOTOR.set_dc_settings(100, 0)
 
         # Reset to straight
-        DIRECTION_MOTOR.run_angle(20, 51, Stop.COAST, True)
+        DIRECTION_MOTOR.run_angle(150, 148, Stop.HOLD, True)
 
         # Set motor angle to zero to make it easier to calculate target angles
+        print("Angle before reset: %i" % DIRECTION_MOTOR.angle())
         DIRECTION_MOTOR.reset_angle(0)
 
         print("Angle reset: " + str(DIRECTION_MOTOR.angle()))
@@ -101,52 +106,90 @@ class Robot:
         # Play confirm sound
         play_sound_in_background(SoundFile.CONFIRM, 50)
 
-        # Wait for button press
-        while not TOUCH_BUTTON.pressed():
-            for m in SWING_MOTORS:
-                m.track_target(angle)
     # End
 
     def setDirection(self, direction):
         print("Setting direction to: " + str(direction))
-        
-        DIRECTION_MOTOR.run_target(30, direction, Stop.COAST, True)
+
+        # while abs(DIRECTION_MOTOR.angle() - direction) < 1.5:
+        #     DIRECTION_MOTOR.track_target(direction)
+        #     wait(100)
+
+        # DIRECTION_MOTOR.stop(Stop.HOLD)
+
+        DIRECTION_MOTOR.run_target(30, direction, Stop.HOLD, True)
         wait(1000)
-             
+
         print("Ready to shoot, angle: " + str(DIRECTION_MOTOR.angle()))
     # End
 
     def shoot(self, speed: int):
+        dc = (float(speed) / 4000.0) * 100.0
         for m in SWING_MOTORS:
-            m.run(speed)
+            m.dc(dc)
         # Thread(target=brick.sound.file, args=(SoundFile.KUNG_FU, 50)).start()
 
-        while not SWING_MOTOR.stalled():
-            pass
+        brick.sound.beep()
+
+        print("SHOOT")
+
+        timer = StopWatch()
+        timer.pause()
+        timerActive = False
+
+        while True:            
+
+            if SWING_MOTOR.speed() == 0:
+                timer.reset()
+                timer.resume()
+                timerActive = True
+
+            while timerActive:
+                if timer.time() >= 500:
+                    print("Timer more than 500, speed: %f" % SWING_MOTOR.speed())
+                    if SWING_MOTOR.speed() < 1 and SWING_MOTOR.speed() > -1:
+                        timer.pause()
+                        break
+                    else:
+                        timer.pause()
+                        timerActive = False
+
+            if timerActive:
+                break
+
+            # print("Speed: %i" % SWING_MOTOR.speed())
+            # print("Angle: %i" % SWING_MOTOR.angle())
 
         for m in SWING_MOTORS:
             m.stop()
         wait(250)
     # End
 
-    def wait_for_power_select(self, power=0, steps=50):
-        while not TOUCH_BUTTON.pressed():
-            # TODO: Power selection via buttons and display
-            if Button.LEFT in brick.buttons():
-                power += steps
-            elif Button.RIGHT in brick.buttons():
-                power -= steps
-                
-            if power < 0:
-                power = 0
-            elif power > 4000:
-                power = 4000
+    def __set_display(self, str):
+        brick.display.clear()
+        brick.display.text(str, (60, 50))
 
-            brick.display.clear()
-            brick.display.text("Power: " + str(power), (60, 50))
+    def wait_for_power_select(self, power=0, steps=50):
+        self.__set_display(str(power))
+
+        while not TOUCH_BUTTON.pressed():
+            if Button.LEFT in brick.buttons():
+                power -= steps
+                if power < 0:
+                    power = 0
+                self.__set_display(str(power))
+
+            elif Button.RIGHT in brick.buttons():
+                power += steps
+                if power > 4000:
+                    power = 4000
+                self.__set_display(str(power))
+
+            wait(100)
 
         return power
     # End
+
 
     def wait_for_button(self):
         while not TOUCH_BUTTON.pressed():
