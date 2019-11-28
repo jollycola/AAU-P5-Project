@@ -10,6 +10,9 @@ def boundingBoxFinder(path, debug=False):
 
     # Reads the picture by path and converts the color system to HSV
     image = cv2.imread(path)
+    image_inv = ~image
+    cv2.imwrite("image_inv.jpg", image_inv)
+
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     # Range for lower red

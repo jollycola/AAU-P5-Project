@@ -3,9 +3,9 @@ from colorRecognition import colorRecognition as cr
 
 
 def main():
-    run_single("DSC_0014.JPG")
+    run_single("4000 (2).JPG")
 
-    run_all()
+    # run_all()
 
 
 def run_single(path):
