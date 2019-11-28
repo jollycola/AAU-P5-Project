@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 
-def boundingBoxFinder(path):
+def boundingBoxFinder(path, debug=False):
     # Path for pictures
     print("Path: " + path)
 
@@ -26,8 +26,9 @@ def boundingBoxFinder(path):
     mask = mask1+mask2
     contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     
-    # target = cv2.bitwise_and(image,image, mask=mask)
-    # cv2.imwrite("target.png", target)
+    if debug:
+        target = cv2.bitwise_and(image,image, mask=mask)
+        cv2.imwrite("target.png", target)
 
     # Finds the biggest bounding box
     biggest_box = _find_biggest_box(contours)
@@ -45,9 +46,9 @@ def boundingBoxFinder(path):
     # Coords inserted into a tuple
     coords = np.array([first_coord, second_coord, third_coord, fourth_coord])
 
-    # img = cv2.rectangle(image, (int(biggest_box[1]), int(biggest_box[2])), (int(biggest_box[1]+biggest_box[3]), int(biggest_box[2]+biggest_box[4])), (0, 255, 0), 2)
-
-    # cv2.imwrite("box.jpg", img)
+    if debug:
+        img = cv2.rectangle(image, (int(biggest_box[1]), int(biggest_box[2])), (int(biggest_box[1]+biggest_box[3]), int(biggest_box[2]+biggest_box[4])), (0, 255, 0), 2)
+        cv2.imwrite("box.jpg", img)
 
     return coords
 
