@@ -2,18 +2,26 @@ import os
 from colorRecognition import colorRecognition as cr
 
 
-def main():
-    run_single("4000 (2).JPG")
-
-    # run_all()
-
-
 def run_single(path):
     coords = cr.boundingBoxFinder(os.path.join("sample", path), True)
     print(coords)
 
+def run_single_dir(path):
+    coords = cr.boundingBoxFinder(os.path.join("sample_dir", path), True)
+    print(coords)
 
-def run_all():
+
+def run_all_dir():
+    f = open("test_dir.csv", "w+")
+
+    for file in os.listdir(".\\sample_dir"):
+        coords = cr.boundingBoxFinder(os.path.join(".\\sample_dir", file))
+        f.write("%s;%i:%i;%i:%i\n" % (file, coords[0][0], coords[0][1], coords[1][0], coords[1][1]))
+
+    f.close()
+
+
+def run_all_dist():
     f = open("test.csv", "w+")
 
     for file in os.listdir(".\\sample"):
@@ -21,6 +29,13 @@ def run_all():
         f.write("%s;%i:%i;%i:%i;%i:%i;%i:%i\n" % (file, coords[0][0], coords[0][1], coords[1][0], coords[1][1], coords[2][0], coords[2][1], coords[3][0], coords[3][1]))
 
     f.close()
+
+
+def main():
+    # run_single("4000 (2).JPG")
+    # run_all_dist()
+    run_single_dir("DSC_0011.JPG")
+    # run_all_dir()
 
 
 if __name__ == "__main__":
