@@ -63,7 +63,7 @@ class Robot:
 
     def calibrate_swing(self):
         ''' Calibrate swing motors '''
-        # Run motors until stalled
+        # Run motors until stalled -500 in swing it yeets up and for every motor
         for m in SWING_MOTORS:
             m.run(-500)
 
