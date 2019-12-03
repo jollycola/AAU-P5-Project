@@ -4,6 +4,8 @@ from ev3dev2.motor import Motor, OUTPUT_A, OUTPUT_B, OUTPUT_C, OUTPUT_D, SpeedPe
 from ev3dev2.sound import Sound
 from ev3dev2.sensor.lego import TouchSensor
 from ev3dev2.sensor import INPUT_1
+from ev3dev2.console import Console
+from ev3dev2.button import Button
 
 # https://python-ev3dev.readthedocs.io/en/ev3dev-stretch/#library-documentation
 
@@ -17,6 +19,8 @@ class Robot:
         self.swing_motorR = LargeMotor(OUTPUT_C)
         self.swing_motors = [self.swing_motorL, self.swing_motorC, self.swing_motorR]
         self.touch_sensor = TouchSensor(INPUT_1)
+        self.console = Console('Lat15-TerminusBold16.psf.gz')
+        self.buttons = Button()
 
     def beep(self, frequency=700, wait_for_comeplete=False):
         play_type = Sound.PLAY_WAIT_FOR_COMPLETE if wait_for_comeplete else Sound.PLAY_NO_WAIT_FOR_COMPLETE
@@ -26,21 +30,24 @@ class Robot:
     def calibrate_dir(self):
         ''' Calibrate direction motor '''
         # Run motor with 25% power, and wait until it stops running
-        self.direction_motor.on(SpeedPercent(-30), block=False)
+        self.direction_motor.on(SpeedPercent(-10), block=False)
         # while (not self.direction_motor.STATE_OVERLOADED):
         #     print(self.direction_motor.duty_cycle)
         self.direction_motor.wait_until(self.direction_motor.STATE_OVERLOADED) 
 
-        self.direction_motor.stop_action = Motor.STOP_ACTION_BRAKE
+        self.direction_motor.stop_action = Motor.STOP_ACTION_COAST
         self.direction_motor.stop()
 
+        time.sleep(.5)
+
         # Reset to straight
-        self.direction_motor.on_for_degrees(SpeedPercent(10), 160, brake=True, block=True)
+        # self.direction_motor.on_for_seconds(SpeedPercent(10), .835, brake=True, block=True)
+        self.direction_motor.on_for_degrees(SpeedPercent(10), 127, brake=True, block=True)
         self.direction_motor.reset()
+
         print("Motor reset, position: " + str(self.direction_motor.position))
 
         time.sleep(.5)
-        self.beep()
 
     def calibrate_swing(self):
         for m in self.swing_motors:
@@ -59,22 +66,8 @@ class Robot:
             m.reset()
             m.stop_action = m.STOP_ACTION_HOLD
             m.stop()
-
-        
-
-            
-        #for m in self.swing_motors:    
-            # May not be needed plus ved ikke hvilken posistion den skal være
-         #   m.on_to_position(SpeedPercent(-25), 130, brake=True, block=False)
-        
-       # for m in self.swing_motors:
-        #    m.wait(1000)
-
-        #for m in self.swing_motors:
-            #m.reset()
         
         print("Ready Angle: %i" % self.swing_motorC.position)
-        self.sound.speak('I am ready bitch')       
         
 
     def ready_swing(self, angle: int):
@@ -92,7 +85,6 @@ class Robot:
         
         print("Swing Angle: %i" % self.swing_motorC.position)
 
-        self.beep(frequency=300)
              
         
 
@@ -102,21 +94,57 @@ class Robot:
         print("Direction set to: " + str(self.direction_motor.position))
         
     def shoot(self, power):
-        dc = (float(power) / 4000.0) *100.0
-        self.swing_motorC.on(SpeedPercent(-dc), block=False)
-        self.swing_motorL.on(SpeedPercent(-dc), block=False)
-        self.swing_motorR.on(SpeedPercent(-dc), block=False)
-        print("SHOOT")
-        
-        self.beep(frequency=300)
-        time.sleep(.5)
-        self.swing_motorC.wait_until(self.swing_motorC.STATE_OVERLOADED)
-        self.beep(frequency=1000)
+        # self.swing_motorC.on(SpeedPercent(-dc), block=False)
+        # self.swing_motorL.on(SpeedPercent(-dc), block=False)
+        # self.swing_motorR.on(SpeedPercent(-dc), block=False)
+
+        print("SHOOT, power: %i" % power)
+
         for m in self.swing_motors:
-                m.stop()
+            m.duty_cycle_sp = -power
+
+        for m in self.swing_motors:
+            m.run_direct()
+      
+        
+        time.sleep(.5)
+
+        self.swing_motorC.wait_until_not_moving()
+
+        for m in self.swing_motors:
+            m.reset()
 
     # End
 
     def wait_for_button(self):
         self.touch_sensor.wait_for_bump()
-        
+
+    def __set_display(self, str):
+        self.console.text_at(str, column=1, row=1, reset_console=True)
+
+
+    def wait_for_power_select(self, power=0, steps=1):
+        self.__set_display(str(power))
+
+        def left():
+            power -= steps
+            if power < 0:
+                power = 0
+            self.__set_display(str(power))
+            self.buttons.wait_for_released(buttons=['left'], timeout_ms=150)
+
+        def right():
+            power += steps
+            if power > 100:
+                power = 100
+            self.__set_display(str(power))
+            self.buttons.wait_for_released(buttons=['right'], timeout_ms=150)
+
+        while not self.touch_sensor.is_pressed:
+            if self.buttons.left:
+                left()
+            elif self.buttons.right:
+                right()
+
+        return power
+
