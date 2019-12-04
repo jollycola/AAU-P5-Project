@@ -21,11 +21,22 @@ class Robot:
         self.touch_sensor = TouchSensor(INPUT_1)
         self.console = Console('Lat15-TerminusBold16.psf.gz')
         self.buttons = Button()
+        self.beeps_enabled = True
 
     def beep(self, frequency=700, wait_for_comeplete=False):
+        if not self.beeps_enabled:
+            return
         play_type = Sound.PLAY_WAIT_FOR_COMPLETE if wait_for_comeplete else Sound.PLAY_NO_WAIT_FOR_COMPLETE
         self.sound.beep("-f %i" % frequency, play_type=play_type)
 
+    def disable_beeps(self):
+        self.beeps_enabled = False
+
+    def enable_beeps(self):
+        self.beeps_enabled = True
+
+    def is_beeps_enabled(self):
+        return self.beeps_enabled
 
     def calibrate_dir(self):
         ''' Calibrate direction motor '''
