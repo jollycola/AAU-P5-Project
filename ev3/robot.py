@@ -138,31 +138,50 @@ class Robot:
         self.console.text_at(str, column=1, row=1, reset_console=True)
 
 
-    def wait_for_power_select(self, power=0, steps=1):
-        self.__set_display(str(power))
+    def wait_for_power_select(self, power=0, angle=0, steps=1):
+        self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
 
         def left():
             power -= steps
             if power < 0:
                 power = 0
-            self.__set_display(str(power))
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
             self.buttons.wait_for_released(buttons=['left'], timeout_ms=150)
 
         def right():
             power += steps
             if power > 100:
                 power = 100
-            self.__set_display(str(power))
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
             self.buttons.wait_for_released(buttons=['right'], timeout_ms=150)
+
+        def up():
+            angle += steps
+            if angle > 110:
+                angle = 110
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
+            self.buttons.wait_for_released(buttons=['up'], timeout_ms=150)
+
+        def down():
+            angle -= steps
+            if angle < 0:
+                angle = 0
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
+            self.buttons.wait_for_released(buttons=['down'], timeout_ms=150)
+
 
         while not self.touch_sensor.is_pressed:
             if self.buttons.left:
                 left()
             elif self.buttons.right:
                 right()
+            elif self.buttons.up:
+                up()
+            elif self.buttons.down:
+                down()
 
         self.console.set_font(font=DEFAULT_FONT, reset_console=True)
-        return power
+        return (power, angle)
 
     def select_connection_mode(self):
         self.__set_display("Enable Connection\nLeft: True - Right: False")
