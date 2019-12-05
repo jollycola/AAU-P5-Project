@@ -134,7 +134,7 @@ class Robot:
         self.touch_sensor.wait_for_bump()
 
     def __set_display(self, str):
-        self.set_font(font=LARGER_FONT, reset_console=True)
+        self.console.set_font(font=LARGER_FONT, reset_console=True)
         self.console.text_at(str, column=1, row=1, reset_console=True)
 
 
@@ -161,7 +161,7 @@ class Robot:
             elif self.buttons.right:
                 right()
 
-        self.set_font(font=DEFAULT_FONT, reset_console=True)
+        self.console.set_font(font=DEFAULT_FONT, reset_console=True)
         return power
 
     def select_connection_mode(self):
@@ -179,7 +179,7 @@ class Robot:
                 self.buttons.wait_for_released(buttons=['right'])
                 break
 
-        self.set_font(font=DEFAULT_FONT, reset_console=True)
+        self.console.set_font(font=DEFAULT_FONT, reset_console=True)
         return enabled
 
     def print(self, string):
