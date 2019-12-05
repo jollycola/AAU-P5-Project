@@ -183,4 +183,4 @@ class Robot:
         return enabled
 
     def print(self, string):
-        self.console(string)
+        print(string)
