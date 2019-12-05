@@ -20,7 +20,7 @@ if connection_enabled:
 while True:
     if connection_enabled:
         robot.print("Press to take picture")
-        #Send message to pi
+        server.send_data_to_client("READY")
         (direction, power, angle) = server.wait_for_data
     else:
         power = robot.wait_for_power_select(power)
