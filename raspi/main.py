@@ -12,7 +12,7 @@ from colorRecognition.colorRecognition import (boundingBoxFinder)
 def main():
     ''' Run the computer vision program '''
 
-    connection = Client("10.42.0.13", 1234)
+    connection = Client("10.42.0.13")
     connection.connect_to_server()
 
     while True:
