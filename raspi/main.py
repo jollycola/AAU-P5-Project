@@ -45,7 +45,7 @@ def main():
         print("Distance: %i " % distance)
         print("Direction: %f " % direction)
         
-        connection.send_data_to_server("%.2f,%d,%i" % (direction, distance * 2, 10))
+        connection.send_data_to_server("%.2f,%d,%i" % (direction, 100, 10))
         # exit()
 
 
