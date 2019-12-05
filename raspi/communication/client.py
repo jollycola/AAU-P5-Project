@@ -2,17 +2,28 @@
 import socket
 
 
+PORT_RANGE = (1234, 1235, 1236, 1237, 1238)
+
 class Client:
     '''A client socket class'''
 
     def __init__(self, host, port):
+        self.host = host
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_address = (host, port)
+        self.server_address
     # END
 
     def connect_to_server(self):
         '''Creates a connection to the specified server'''
-        self.client_socket.connect(self.server_address)
+        i = 0
+
+        while True:
+            self.server_address = (self.host, PORT_RANGE[i % len(PORT_RANGE)])
+            try:
+                self.client_socket.connect(self.server_address)
+            except OSError:
+                i += 1
+
 
     def wait_for_string(self, string):
         '''Waits until the specified string is received'''
