@@ -1,6 +1,6 @@
 import math
 
-from .CONSTANTS import (FOCAL_LENGTH, OBJECT_REAL_HEIGHT, IMAGE_HEIGHT, SENSOR_HEIGHT)
+from .constants import (FOCAL_LENGTH, OBJECT_REAL_HEIGHT, IMAGE_HEIGHT, SENSOR_HEIGHT)
 
 
 def calculate_distance(coords):
