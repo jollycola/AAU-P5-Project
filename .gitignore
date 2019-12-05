@@ -2,7 +2,9 @@
 # Ignore the root level .vscode folder
 /.vscode/
 
-
+/raspi/image.jpg
+/raspi/box.jpg
+/raspi/target.jpg
 
 # Created by https://www.gitignore.io/api/python
 # Edit at https://www.gitignore.io/?templates=python
