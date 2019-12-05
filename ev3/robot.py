@@ -9,6 +9,9 @@ from ev3dev2.button import Button
 
 # https://python-ev3dev.readthedocs.io/en/ev3dev-stretch/#library-documentation
 
+DEFAULT_FONT = "Lat15-TerminusBold22x11.psf.gz"
+LARGER_FONT = "Lat15-TerminusBold16.psf.gz"
+
 class Robot:
 
     def __init__(self):
@@ -19,7 +22,7 @@ class Robot:
         self.swing_motorR = LargeMotor(OUTPUT_C)
         self.swing_motors = [self.swing_motorL, self.swing_motorC, self.swing_motorR]
         self.touch_sensor = TouchSensor(INPUT_1)
-        self.console = Console('Lat15-TerminusBold16.psf.gz')
+        self.console = Console(DEFAULT_FONT)
         self.buttons = Button()
         self.beeps_enabled = True
 
@@ -131,6 +134,7 @@ class Robot:
         self.touch_sensor.wait_for_bump()
 
     def __set_display(self, str):
+        self.set_font(font=LARGER_FONT, reset_console=True)
         self.console.text_at(str, column=1, row=1, reset_console=True)
 
 
@@ -157,5 +161,26 @@ class Robot:
             elif self.buttons.right:
                 right()
 
+        self.set_font(font=DEFAULT_FONT, reset_console=True)
         return power
 
+    def select_connection_mode(self):
+        self.__set_display("Enable Connection\nLeft: True - Right: False")
+
+        enabled = True
+        
+        while not self.touch_sensor.is_pressed:
+            if self.buttons.left:
+                enabled = True
+                self.buttons.wait_for_released(buttons=['left'])
+                break
+            elif self.buttons.right:
+                enabled = False
+                self.buttons.wait_for_released(buttons=['right'])
+                break
+
+        self.set_font(font=DEFAULT_FONT, reset_console=True)
+        return enabled
+
+    def print(self, string):
+        self.console(string)
