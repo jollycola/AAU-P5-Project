@@ -20,7 +20,10 @@ class Client:
             server_address = (self.host, PORT_RANGE[i % len(PORT_RANGE)])
             try:
                 self.client_socket.connect(server_address)
+                print("Connected to server")
+                return
             except OSError:
+                print("Could not connect with: %i" % PORT_RANGE[i % len(PORT_RANGE)])
                 i += 1
 
 
