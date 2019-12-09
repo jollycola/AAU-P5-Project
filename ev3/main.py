@@ -5,15 +5,15 @@ from server import Server
 
 robot = Robot()
 power = 1
+angle = 1
 
 robot.beep()
 
 connection_enabled = robot.select_connection_mode()
 
 if connection_enabled:
-    server = Server("10.42.0.13", 1234)
+    server = Server("10.42.0.3")
     server.start_server()
-
     server.wait_for_connection()
 
 
@@ -21,10 +21,9 @@ while True:
     if connection_enabled:
         robot.print("Press to take picture")
         server.send_data_to_client("READY")
-        (direction, power, angle) = server.wait_for_data
+        (direction, power, angle) = server.wait_for_data()
     else:
-        power = robot.wait_for_power_select(power)
-        angle = 0
+        (power, angle) = robot.wait_for_power_select(power, angle)
         direction = 0
 
     robot.calibrate_swing()
@@ -35,4 +34,6 @@ while True:
 
     robot.wait_for_button()
     robot.shoot(power)
+
+    robot.wait_for_button()
 
