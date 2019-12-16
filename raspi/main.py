@@ -5,12 +5,17 @@ import camera.camera as camera
 import imagecal.distance_calc as distCalc
 import imagecal.direction_calc as dirCalc
 from communication.client import Client
+from model import Model
+
 
 from colorRecognition.colorRecognition import (boundingBoxFinder)
 
 
 def main():
     ''' Run the computer vision program '''
+    
+    mi_model = Model("minigolfmodel")
+    mi_model.load_model()
 
     connection = Client("10.42.0.3")
     connection.connect_to_server()
@@ -44,8 +49,10 @@ def main():
         print("Done!")
         print("Distance: %i " % distance)
         print("Direction: %f " % direction)
+        print("Predicting...")
+        power, swing = mi_model.predict_one(distance)
         
-        connection.send_data_to_server("%.2f,%d,%i" % (direction, 100, 10))
+        connection.send_data_to_server("%.2f,%d,%i" % (direction, power, swing))
         # exit()
 
 
