@@ -38,7 +38,7 @@ def main():
         # coords = [[1215, 1363], [1261, 1363], [1215, 1750], [1263, 1749]]
 
         # Calculate distance from bounding box
-        distance = distCalc.calculate_distance(coords)
+        distance = (distCalc.calculate_distance(coords) / 10)
 
         # Calculate direction from bounding box
         direction = dirCalc.calculate_direction(coords)
@@ -51,6 +51,8 @@ def main():
         print("Direction: %f " % direction)
         print("Predicting...")
         power, swing = mi_model.predict_one(distance)
+        print("Power: %f" % power)
+        print("Swing: %f" % swing)  
         
         connection.send_data_to_server("%.2f,%d,%i" % (direction, power, swing))
         # exit()
