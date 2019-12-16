@@ -2,25 +2,18 @@
 from robot import Robot
 from server import Server
 
-PORT_RANGE = (1234, 1235, 1236, 1237, 1238)
 
 robot = Robot()
 power = 1
+angle = 1
 
 robot.beep()
 
 connection_enabled = robot.select_connection_mode()
 
 if connection_enabled:
-    i = 0
-    while True:
-        try:
-            server = Server("10.42.0.13", PORT_RANGE[i % len(PORT_RANGE)])
-            server.start_server()
-        except OSError:
-            i += 1
-            
-
+    server = Server("10.42.0.3")
+    server.start_server()
     server.wait_for_connection()
 
 
@@ -30,8 +23,7 @@ while True:
         server.send_data_to_client("READY")
         (direction, power, angle) = server.wait_for_data()
     else:
-        power = robot.wait_for_power_select(power)
-        angle = 0
+        (power, angle) = robot.wait_for_power_select(power, angle)
         direction = 0
 
     robot.calibrate_swing()

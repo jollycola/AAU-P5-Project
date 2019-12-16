@@ -1,26 +1,30 @@
 import socket
-import time
+from time import sleep
+
+PORT_RANGE = (1234, 1235, 1236, 1237, 1238)
 
 class Server:
     '''Server socket class'''
 
-    def __init__(self, host, port):
+    def __init__(self, host):
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_address = (host, port)
+        self.host = host
 
-    def start_server(self):
-        print("Starting server on '%s:%s'" % self.server_address)
-        
-        while True:
+    def start_server(self):          
+        for port in PORT_RANGE:
             try:
+                print("Trying server on '%s:%s'" % (self.host, port))
                 self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                self.server_socket.bind(self.server_address)
+                self.server_socket.bind((self.host, port))
                 self.server_socket.listen(1)
-                print("Server started!")
+                print("Server started on '%s:%s'!" % (self.host, port))
                 return
             except OSError as error:
-                print(str(error) + " trying again")
-                time.sleep(15)
+                print("Could not start on %i" % port)
+                sleep(1)
+        print("Could not start server on any port")
+        sleep(1)
+        exit(1)
 
     def stop_server(self):
         print("Stopping server")

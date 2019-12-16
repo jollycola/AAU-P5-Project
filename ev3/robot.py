@@ -104,8 +104,15 @@ class Robot:
 
     def set_direction(self, direction):
         print("Setting direction to: " + str(direction))
+        #direction = self.__aim_correction(direction)
         self.direction_motor.on_for_degrees(SpeedPercent(10), direction*3)
         print("Direction set to: " + str(self.direction_motor.position))
+
+    def __aim_correction(self, direction):
+        x = direction
+        y = -0.00000000429085685725*x**6 + 0.00000004144345630728*x**5 + 0.00001219331494759860*x**4 + 0.00020702946527870400*x**3 + 0.00716486965517779000*x**2 + 1.29675836037884000000*x + 0.27064829453014400000
+        
+        return y
         
     def shoot(self, power):
         # self.swing_motorC.on(SpeedPercent(-dc), block=False)
@@ -138,31 +145,50 @@ class Robot:
         self.console.text_at(str, column=1, row=1, reset_console=True)
 
 
-    def wait_for_power_select(self, power=0, steps=1):
-        self.__set_display(str(power))
+    def wait_for_power_select(self, power=0, angle=0, steps=1):
+        self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
 
         def left():
             power -= steps
             if power < 0:
                 power = 0
-            self.__set_display(str(power))
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
             self.buttons.wait_for_released(buttons=['left'], timeout_ms=150)
 
         def right():
             power += steps
             if power > 100:
                 power = 100
-            self.__set_display(str(power))
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
             self.buttons.wait_for_released(buttons=['right'], timeout_ms=150)
+
+        def up():
+            angle += steps
+            if angle > 110:
+                angle = 110
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
+            self.buttons.wait_for_released(buttons=['up'], timeout_ms=150)
+
+        def down():
+            angle -= steps
+            if angle < 0:
+                angle = 0
+            self.__set_display("Pow: %i\nAngle: %i" % (power, angle))
+            self.buttons.wait_for_released(buttons=['down'], timeout_ms=150)
+
 
         while not self.touch_sensor.is_pressed:
             if self.buttons.left:
                 left()
             elif self.buttons.right:
                 right()
+            elif self.buttons.up:
+                up()
+            elif self.buttons.down:
+                down()
 
         self.console.set_font(font=DEFAULT_FONT, reset_console=True)
-        return power
+        return (power, angle)
 
     def select_connection_mode(self):
         self.__set_display("Enable Connection\nLeft: True - Right: False")
