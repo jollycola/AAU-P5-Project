@@ -6,7 +6,6 @@ import sys
 # -o specifies the output
 CAMERA_COMMAND = "raspistill -vf -hf -o "
 
-
 def take_picture(path: str):
     """
     Take a picture on the Raspberry Pi and save it at the specified path
@@ -26,5 +25,3 @@ def take_picture(path: str):
     print("Picture taken: '" + path + "'")
 
     return path
-
-# END

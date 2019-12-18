@@ -13,7 +13,6 @@ DEFAULT_FONT = "Lat15-TerminusBold22x11.psf.gz"
 LARGER_FONT = "Lat15-TerminusBold16.psf.gz"
 
 class Robot:
-
     def __init__(self):
         self.sound = Sound()
         self.direction_motor = MediumMotor(OUTPUT_D)
@@ -99,9 +98,6 @@ class Robot:
         
         print("Swing Angle: %i" % self.swing_motorC.position)
 
-             
-        
-
     def set_direction(self, direction):
         print("Setting direction to: " + str(direction))
         #direction = self.__aim_correction(direction)
@@ -135,15 +131,12 @@ class Robot:
         for m in self.swing_motors:
             m.reset()
 
-    # End
-
     def wait_for_button(self):
         self.touch_sensor.wait_for_bump()
 
     def __set_display(self, str):
         self.console.set_font(font=LARGER_FONT, reset_console=True)
         self.console.text_at(str, column=1, row=1, reset_console=True)
-
 
     def wait_for_power_select(self, power=0, angle=0, steps=1):
         self.__set_display("Pow: %i\nAngle: %i" % (power, angle))

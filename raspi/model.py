@@ -1,7 +1,6 @@
 from tensorflow import keras
 
 class Model:
-
     def __init__(self, path):
         self.model_path = path
 
@@ -13,6 +12,4 @@ class Model:
         power = round(result[0][0] * 100)
         distance = round(result[0][1])
 
-
         return (power, distance)
-

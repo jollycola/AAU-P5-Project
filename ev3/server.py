@@ -1,5 +1,6 @@
 import socket
 from time import sleep
+from sys import exit
 
 PORT_RANGE = (1234, 1235, 1236, 1237, 1238)
 
@@ -24,7 +25,7 @@ class Server:
                 sleep(1)
         print("Could not start server on any port")
         sleep(1)
-        exit(1)
+        sys.exit(1)
 
     def stop_server(self):
         print("Stopping server")
@@ -57,7 +58,6 @@ class Server:
                     break
         except Exception:
             self.connection.close()
-        # END
 
     def parse_data(self, data):
         print("data: " + data)
@@ -65,4 +65,3 @@ class Server:
         assert(len(strings) == 3)
         print(strings)
         return (float(strings[0]), float(strings[1]), float(strings[2]))
-    # END

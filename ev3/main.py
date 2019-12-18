@@ -2,7 +2,6 @@
 from robot import Robot
 from server import Server
 
-
 robot = Robot()
 power = 1
 angle = 1
@@ -15,7 +14,6 @@ if connection_enabled:
     server = Server("10.42.0.3")
     server.start_server()
     server.wait_for_connection()
-
 
 while True:
     if connection_enabled:
@@ -36,4 +34,3 @@ while True:
     robot.shoot(power)
 
     robot.wait_for_button()
-

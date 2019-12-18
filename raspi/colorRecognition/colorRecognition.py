@@ -43,7 +43,6 @@ def boundingBoxFinder(path):
 
     return coords
 
-
 def _find_biggest_box(contours):
     i = 0
     biggest_box = []
@@ -64,7 +63,6 @@ def _find_biggest_box(contours):
             i = i + 1
 
     return biggest_box
-
 
 def _matches_flag_ratio(height, width):
     flag_height_width_ratio = 7.14

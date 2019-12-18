@@ -1,13 +1,10 @@
 '''Main Raspberry Pi Program'''
 import os
-
 import camera.camera as camera
 import imagecal.distance_calc as distCalc
 import imagecal.direction_calc as dirCalc
 from communication.client import Client
 from model import Model
-
-
 from colorRecognition.colorRecognition import (boundingBoxFinder)
 
 
@@ -43,8 +40,6 @@ def main():
         # Calculate direction from bounding box
         direction = dirCalc.calculate_direction(coords)
 
-        
-
         # Send calculated dist and dir to connected PC
         print("Done!")
         print("Distance: %i " % distance)
@@ -55,8 +50,6 @@ def main():
         print("Swing: %f" % swing)  
         
         connection.send_data_to_server("%.2f,%d,%i" % (direction, power, swing))
-        # exit()
-
 
 if __name__ == "__main__":
     main()

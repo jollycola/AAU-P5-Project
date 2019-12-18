@@ -1,7 +1,6 @@
 '''Module handling the client side of the server/client socket connection'''
 import socket
 
-
 PORT_RANGE = (1234, 1235, 1236, 1237, 1238)
 
 class Client:
@@ -10,7 +9,6 @@ class Client:
     def __init__(self, host):
         self.host = host
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    # END
 
     def connect_to_server(self):
         '''Creates a connection to the specified server'''
@@ -25,7 +23,6 @@ class Client:
             except OSError:
                 print("Could not connect with: %i" % PORT_RANGE[i % len(PORT_RANGE)])
                 i += 1
-
 
     def wait_for_string(self, string):
         '''Waits until the specified string is received'''
