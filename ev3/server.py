@@ -25,7 +25,7 @@ class Server:
                 sleep(1)
         print("Could not start server on any port")
         sleep(1)
-        sys.exit(1)
+        sys.exit("Could not bind to any port")
 
     def stop_server(self):
         print("Stopping server")
