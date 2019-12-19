@@ -104,7 +104,7 @@ class Robot:
 
     def set_direction(self, direction):
         print("Setting direction to: " + str(direction))
-        self.direction_motor.on_for_degrees(SpeedPercent(10), direction*3)
+        self.direction_motor.on_for_degrees(SpeedPercent(10), round(direction*3))
         print("Direction set to: " + str(self.direction_motor.position))
         
     def shoot(self, power):
