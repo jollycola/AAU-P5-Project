@@ -31,15 +31,6 @@ class Robot:
         play_type = Sound.PLAY_WAIT_FOR_COMPLETE if wait_for_comeplete else Sound.PLAY_NO_WAIT_FOR_COMPLETE
         self.sound.beep("-f %i" % frequency, play_type=play_type)
 
-    def disable_beeps(self):
-        self.beeps_enabled = False
-
-    def enable_beeps(self):
-        self.beeps_enabled = True
-
-    def is_beeps_enabled(self):
-        return self.beeps_enabled
-
     def calibrate_dir(self):
         ''' Calibrate direction motor '''
         # Run motor with 25% power, and wait until it stops running
@@ -104,16 +95,14 @@ class Robot:
         self.direction_motor.on_for_degrees(SpeedPercent(10), round(direction*3))
         print("Direction set to: " + str(self.direction_motor.position))
 
-    def __aim_correction(self, direction):
-        x = direction
-        y = -0.00000000429085685725*x**6 + 0.00000004144345630728*x**5 + 0.00001219331494759860*x**4 + 0.00020702946527870400*x**3 + 0.00716486965517779000*x**2 + 1.29675836037884000000*x + 0.27064829453014400000
-        
-        return y
+#
+#    def __aim_correction(self, direction):
+#        x = direction
+#        y = -0.00000000429085685725*x**6 + 0.00000004144345630728*x**5 + 0.00001219331494759860*x**4 + 0.00020702946527870400*x**3 + 0.00716486965517779000*x**2 + 1.29675836037884000000*x + 0.27064829453014400000
+#        
+#        return y
         
     def shoot(self, power):
-        # self.swing_motorC.on(SpeedPercent(-dc), block=False)
-        # self.swing_motorL.on(SpeedPercent(-dc), block=False)
-        # self.swing_motorR.on(SpeedPercent(-dc), block=False)
 
         print("SHOOT, power: %i" % power)
 

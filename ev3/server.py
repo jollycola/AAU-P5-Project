@@ -27,10 +27,6 @@ class Server:
         sleep(1)
         sys.exit("Could not bind to any port")
 
-    def stop_server(self):
-        print("Stopping server")
-        self.server_socket.close()
-
     def wait_for_connection(self):
         while True:
             self.connection, self.client_address = self.server_socket.accept()
