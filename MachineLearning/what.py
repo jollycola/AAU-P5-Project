@@ -24,8 +24,6 @@ train_stats.pop("POWER")
 train_stats = train_stats.transpose()
 
 
-print(train_stats)
-
 train_targets = train_dataset[['POWER', 'SWING']]
 train_dataset.pop("POWER")
 train_dataset.pop("SWING")
@@ -34,8 +32,6 @@ test_targets = test_dataset[['POWER', 'SWING']]
 test_dataset.pop("POWER")
 test_dataset.pop("SWING")
 
-print("==========TRAIN DATASET==========\n")
-print(train_dataset)
 
 def build_model():
     model = keras.Sequential([
